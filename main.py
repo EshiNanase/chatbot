@@ -24,20 +24,20 @@ def main() -> None:
     while True:
         try:
             response = requests.get(url_lp, headers=headers, params=payload)
-            response = response.json()
+            response_jsoned = response.json()
 
-            if response['status'] == 'found':
-                text = f'Преподаватель проверил: "{response["new_attempts"][0]["lesson_title"]}"\n' \
-                       f'{response["new_attempts"][0]["lesson_url"]}\n\n'
-                if response["new_attempts"][0]["is_negative"] is False:
+            if response_jsoned['status'] == 'found':
+                text = f'Преподаватель проверил: "{response_jsoned["new_attempts"][0]["lesson_title"]}"\n' \
+                       f'{response_jsoned["new_attempts"][0]["lesson_url"]}\n\n'
+                if response_jsoned["new_attempts"][0]["is_negative"] is False:
                     text += 'Ноль ошибок, едем дальше!'
                 else:
                     text += 'Правь код, позорник'
                 bot.send_message(chat_id=chat_id, text=text)
-                payload = {'timestamp': response['last_attempt_timestamp']}
+                payload = {'timestamp': response_jsoned['last_attempt_timestamp']}
             else:
                 bot.send_message(chat_id=chat_id, text='Ничего :(')
-                payload = {'timestamp': response['timestamp_to_request']}
+                payload = {'timestamp': response_jsoned['timestamp_to_request']}
 
         except requests.exceptions.ReadTimeout:
             time.sleep(5)
