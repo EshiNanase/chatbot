@@ -31,8 +31,12 @@ def main() -> None:
                 raise requests.exceptions.HTTPError(response_jsoned['error'])
 
             if response_jsoned['status'] == 'found':
-                text = f'Преподаватель проверил: "{response_jsoned["new_attempts"][0]["lesson_title"]}"\n' \
-                       f'{response_jsoned["new_attempts"][0]["lesson_url"]}\n\n'
+                text = \
+                    f'''
+                    Преподаватель проверил: "{response_jsoned["new_attempts"][0]["lesson_title"]}"
+                    {response_jsoned["new_attempts"][0]["lesson_url"]}
+                    
+                    '''
                 if response_jsoned["new_attempts"][0]["is_negative"] is False:
                     text += 'Ноль ошибок, едем дальше!'
                 else:
