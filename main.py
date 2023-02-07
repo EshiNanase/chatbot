@@ -24,7 +24,11 @@ def main() -> None:
     while True:
         try:
             response = requests.get(url_lp, headers=headers, params=payload)
+            response.raise_for_status()
+
             response_jsoned = response.json()
+            if 'error' in response_jsoned:
+                raise requests.exceptions.HTTPError(response_jsoned['error'])
 
             if response_jsoned['status'] == 'found':
                 text = f'Преподаватель проверил: "{response_jsoned["new_attempts"][0]["lesson_title"]}"\n' \
