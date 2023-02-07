@@ -48,9 +48,9 @@ def main() -> None:
                 payload = {'timestamp': response_jsoned['timestamp_to_request']}
 
         except requests.exceptions.ReadTimeout:
-            time.sleep(5)
+            pass
         except requests.exceptions.ConnectionError:
-            time.sleep(5)
+            time.sleep(10)
 
 
 if __name__ == "__main__":
