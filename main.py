@@ -2,30 +2,29 @@ import time
 import requests
 import telegram
 import os
-from dotenv import load_dotenv
+import dotenv
 
 
 def main() -> None:
-    load_dotenv()
+    dotenv.load_dotenv()
 
-    url_reviews = 'https://dvmn.org/api/user_reviews/'
     url_lp = 'https://dvmn.org/api/long_polling/'
     token_devman = os.environ['TOKEN_DEVMAN']
     headers = {
         'Authorization': token_devman
     }
-    timestamp = 0
+    timestamp = 1675747546.087695
     payload = {'timestamp': timestamp}
 
     token_tg = os.environ['TOKEN_TG']
 
     bot = telegram.Bot(token=token_tg)
-    chat_id = bot.get_updates()[-1].message.chat_id
+    chat_id = os.environ['CHAT_ID']
 
     while True:
         try:
-            requests.get(url_reviews, headers=headers)
-            response = requests.get(url_lp, headers=headers, params=payload).json()
+            response = requests.get(url_lp, headers=headers, params=payload)
+            response = response.json()
 
             if response['status'] == 'found':
                 text = f'Преподаватель проверил: "{response["new_attempts"][0]["lesson_title"]}"\n' \
@@ -35,9 +34,10 @@ def main() -> None:
                 else:
                     text += 'Правь код, позорник'
                 bot.send_message(chat_id=chat_id, text=text)
+                payload = {'timestamp': response['last_attempt_timestamp']}
             else:
                 bot.send_message(chat_id=chat_id, text='Ничего :(')
-                timestamp = response['timestamp_to_request']
+                payload = {'timestamp': response['timestamp_to_request']}
 
         except requests.exceptions.ReadTimeout:
             time.sleep(5)
