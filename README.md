@@ -11,7 +11,12 @@ python==3.10
 ```
 ## Installing
 
-First, you need to install requirements.txt:
+First, you need to clone the code:
+
+```
+git clone https://github.com/EshiNanase/chatbot.git
+```
+Second, you need to install requirements.txt:
 
 ```
 pip install -r requirements.txt
