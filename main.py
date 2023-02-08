@@ -56,22 +56,15 @@ def main() -> None:
             else:
                 payload = {'timestamp': reviews_information['timestamp_to_request']}
 
-        except requests.exceptions.ReadTimeout:
-            text = \
-                f'''
-                Боту прилетело {requests.exceptions.ReadTimeout}
-                '''
-            logger.warning(text)
-        except requests.exceptions.ConnectionError:
-            text = \
-                f'''
-                    Боту прилетело {requests.exceptions.ConnectionError}
-                '''
-            logger.warning(text)
+        except requests.exceptions.ReadTimeout as err:
+            logger.warning('Боту прилетело:')
+            logger.warning(err, exc_info=True)
+
+        except requests.exceptions.ConnectionError as err:
+            logger.warning('Боту прилетело:')
+            logger.warning(err, exc_info=True)
             time.sleep(10)
 
 
 if __name__ == "__main__":
     main()
-    logging.basicConfig(level=logging.ERROR)
-    logger.setLevel(logging.DEBUG)
