@@ -42,7 +42,7 @@ def main() -> None:
                 bot.send_message(chat_id=telegram_chat_id, text=text)
                 payload = {'timestamp': reviews_information['last_attempt_timestamp']}
             else:
-                bot.send_message(chat_id=telegram_chat_id, text='Ничего :(')
+                # bot.send_message(chat_id=telegram_chat_id, text='Ничего :(')
                 payload = {'timestamp': reviews_information['timestamp_to_request']}
 
         except requests.exceptions.ReadTimeout:
