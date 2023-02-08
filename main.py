@@ -4,6 +4,7 @@ import telegram
 import os
 import dotenv
 import logging
+import textwrap
 
 
 def main() -> None:
@@ -41,12 +42,12 @@ def main() -> None:
             reviews_information = response.json()
 
             if reviews_information['status'] == 'found':
-                text = \
+                text = textwrap.dedent(
                     f'''
                     Преподаватель проверил: "{reviews_information["new_attempts"][0]["lesson_title"]}"
                     {reviews_information["new_attempts"][0]["lesson_url"]}
 
-                    '''
+                    ''')
                 if reviews_information["new_attempts"][0]["is_negative"] is False:
                     text += 'Ноль ошибок, едем дальше!'
                 else:
