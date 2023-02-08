@@ -21,9 +21,9 @@ pip install -r requirements.txt
 The code needs .env file with such environment variables as:
 
 ```
-TOKEN_DEVMAN = you can find it here https://dvmn.org/api/docs/
-TOKEN_TG = token of your Telegram bot, text https://t.me/BotFather to create one
-CHAT_ID = you can find it here https://t.me/userinfobot
+DEVMAN_TOKEN = you can find it here https://dvmn.org/api/docs/
+TELEGRAM_TOKEN = token of your Telegram bot, text https://t.me/BotFather to create one
+TELEGRAM_CHAT_ID = you can find it here https://t.me/userinfobot
 ```
 ## Running
 
