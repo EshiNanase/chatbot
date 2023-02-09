@@ -7,6 +7,21 @@ import logging
 import textwrap
 
 
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, telegram_bot, telegram_chat_id):
+        super(TelegramLogsHandler, self).__init__()
+        self.bot = telegram_bot
+        self.chat_id = telegram_chat_id
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.bot.send_message(chat_id=self.chat_id, text=log_entry)
+
+
+logger = logging.getLogger('Logger')
+
+
 def main() -> None:
     dotenv.load_dotenv()
 
@@ -23,15 +38,8 @@ def main() -> None:
     bot = telegram.Bot(token=telegram_token)
     telegram_chat_id = os.environ['TELEGRAM_CHAT_ID']
 
-    class TelegramLogsHandler(logging.Handler):
-
-        def emit(self, record):
-            log_entry = self.format(record)
-            bot.send_message(chat_id=telegram_chat_id, text=log_entry)
-
-    logger = logging.getLogger('Logger')
     logger.setLevel(logging.WARNING)
-    logger.addHandler(TelegramLogsHandler())
+    logger.addHandler(TelegramLogsHandler(bot, telegram_chat_id))
     logger.warning('Бот запущен')
 
     while True:
